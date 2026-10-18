@@ -54,6 +54,13 @@ export default {
                 ? body.headers
                 : {};
 
+        const proxyOptions =
+            body.proxyOptions &&
+                typeof body.proxyOptions === "object" &&
+                !Array.isArray(body.proxyOptions)
+                ? body.proxyOptions
+                : undefined;
+
         /*
          * Use POST values when supplied, otherwise use defaults.
          */
@@ -143,6 +150,7 @@ export default {
 
                         concurrency: dispatcherConcurrency,
                         batch_size: dispatcherBatchSize,
+                        ...(proxyOptions ? { proxyOptions } : {}),
                     }),
                 })
                     .then(async response => {
